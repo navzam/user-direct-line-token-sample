@@ -46,7 +46,7 @@ Tokens are typically sent as bearer tokens in the `Authorization` header. Howeve
 We use two libraries to achieve token validation: [jwks-rsa](https://www.npmjs.com/package/jwks-rsa) and [jsonwebtoken](https://www.npmjs.com/package/jsonwebtoken). We first use `jwks-rsa` to retrieve the AAD public keys used to sign the token:
 
 ```ts
-// tokenValidation.ts
+// validateToken.ts
 
 const decodedToken = jwt.decode(token, { complete: true });
 ...
@@ -59,7 +59,7 @@ const pubKey = keyResult.getPublicKey();
 and then use `jsonwebtoken` to validate the token:
 
 ```ts
-// tokenValidation.ts
+// validateToken.ts
 
 return jwt.verify(token, pubKey, validationOptions) as Record<string, any>;
 ```
@@ -87,6 +87,7 @@ You could customize this to use different claims depending on your needs. See [A
 We call the Direct Line API to retrieve a Direct Line token. Notice that we pass the user ID in the body of the request:
 
 ```ts
+// fetchDirectLineToken.ts
 const response = await fetch('https://directline.botframework.com/v3/directline/tokens/generate', {
         headers: {
             'Content-Type': 'application/json',

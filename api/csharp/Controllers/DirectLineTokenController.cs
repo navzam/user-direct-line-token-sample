@@ -87,7 +87,7 @@ namespace TokenApi.Controllers
             string issuer,
             string audience,
             IConfigurationManager<OpenIdConnectConfiguration> configurationManager,
-            CancellationToken ct = default(CancellationToken))
+            CancellationToken ct = default)
         {
             if (string.IsNullOrEmpty(token)) throw new ArgumentNullException(nameof(token));
             if (string.IsNullOrEmpty(issuer)) throw new ArgumentNullException(nameof(issuer));

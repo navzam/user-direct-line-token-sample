@@ -1,6 +1,6 @@
-import express from 'express';
-import { fetchDirectLineTokenAsync, DirectLineTokenResponse } from './fetchDirectLineToken';
-import { validateTokenAsync } from './validateToken';
+const express = require('express');
+const fetchDirectLineTokenAsync = require('./fetchDirectLineToken');
+const validateTokenAsync = require('./validateToken');
 
 // Verify required environment variables
 const port = enforceEnvironmentVariable('PORT');
@@ -35,7 +35,7 @@ app.post('/api/direct-line-token', async (req, res) => {
     }
 
     // Get user-specific DirectLine token and return it
-    let directLineResponse: DirectLineTokenResponse;
+    let directLineResponse;
     try {
         directLineResponse = await fetchDirectLineTokenAsync(directLineSecret, userId);
     } catch (e) {
@@ -56,7 +56,7 @@ app.listen(port, () => {
 
 // Constructs a user ID from a set of token claims
 // In this sample, we select the "sub" claim
-function getUserIdFromTokenClaims(tokenClaims: Record<string, any>) {
+function getUserIdFromTokenClaims(tokenClaims) {
     const sub = tokenClaims['sub'];
 
     return (typeof sub === 'string' && sub.length > 0) ? sub : null;
@@ -64,7 +64,7 @@ function getUserIdFromTokenClaims(tokenClaims: Record<string, any>) {
 
 // Tries to return the value of an environment variable
 // Quits if the variable doesn't exist
-function enforceEnvironmentVariable(name: string) {
+function enforceEnvironmentVariable(name) {
     const value = process.env[name];
     if (value === undefined || value.length === 0) {
         console.error(`Required environment variable not set: ${name}`);

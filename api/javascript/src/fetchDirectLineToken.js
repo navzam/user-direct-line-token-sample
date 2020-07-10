@@ -1,6 +1,6 @@
-import fetch from 'node-fetch';
+const fetch = require('node-fetch');
 
-export async function fetchDirectLineTokenAsync(secret: string, userId: string) {
+module.exports = async function fetchDirectLineTokenAsync(secret, userId) {
     const response = await fetch('https://directline.botframework.com/v3/directline/tokens/generate', {
         headers: {
             'Content-Type': 'application/json',
@@ -14,13 +14,13 @@ export async function fetchDirectLineTokenAsync(secret: string, userId: string) 
         throw new Error(`Direct Line token API call failed with status ${response.status}`);
     }
 
-    const tokenResponse: DirectLineTokenResponse = await response.json();
+    const tokenResponse = await response.json();
 
     return tokenResponse;
-}
+};
 
-export interface DirectLineTokenResponse {
-    token: string,
-    expires_in: number,
-    conversationId: string,
-}
+// export interface DirectLineTokenResponse {
+//     token: string,
+//     expires_in: number,
+//     conversationId: string,
+// }

@@ -1,4 +1,5 @@
 const express = require('express');
+
 const fetchDirectLineTokenAsync = require('./fetchDirectLineToken');
 const validateTokenAsync = require('./validateToken');
 
@@ -8,11 +9,16 @@ const directLineSecret = enforceEnvironmentVariable('DIRECT_LINE_SECRET');
 const validTokenAudience = enforceEnvironmentVariable('VALID_TOKEN_AUDIENCE');
 const validTokenIssuer = enforceEnvironmentVariable('VALID_TOKEN_ISSUER');
 
+// Create Express application
 const app = express();
 app.use(express.json());
 
 // Endpoint for generating a Direct Line token, given an ID token in the body
 app.post('/api/direct-line-token', async (req, res) => {
+    // Set CORS header. For simplicity, allow requests from all origins
+    // You should restrict this to specific domains
+    res.header('Access-Control-Allow-Origin', '*');
+
     // Extract ID token from body
     const idToken = req.body['id_token'];
     if (typeof idToken !== 'string') {
@@ -35,9 +41,9 @@ app.post('/api/direct-line-token', async (req, res) => {
     }
 
     // Get user-specific DirectLine token and return it
-    let directLineResponse;
+    let directLineTokenResponse;
     try {
-        directLineResponse = await fetchDirectLineTokenAsync(directLineSecret, userId);
+        directLineTokenResponse = await fetchDirectLineTokenAsync(directLineSecret, userId);
     } catch (e) {
         if (e instanceof Error) {
             res.status(400).send({ message: e.message });
@@ -47,7 +53,8 @@ app.post('/api/direct-line-token', async (req, res) => {
         throw e;
     }
 
-    res.send(directLineResponse);
+    const response = { ...directLineTokenResponse, userId: randomUserId };
+    res.send(response);
 });
 
 app.listen(port, () => {
@@ -56,10 +63,11 @@ app.listen(port, () => {
 
 // Constructs a user ID from a set of token claims
 // In this sample, we select the "sub" claim
+// Prefixed with "dl_", as required by the Direct Line API
 function getUserIdFromTokenClaims(tokenClaims) {
     const sub = tokenClaims['sub'];
 
-    return (typeof sub === 'string' && sub.length > 0) ? sub : null;
+    return (typeof sub === 'string' && sub.length > 0) ? `dl_${sub}` : null;
 }
 
 // Tries to return the value of an environment variable

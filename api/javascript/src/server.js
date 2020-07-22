@@ -53,7 +53,7 @@ app.post('/api/direct-line-token', async (req, res) => {
         throw e;
     }
 
-    const response = { ...directLineTokenResponse, userId: randomUserId };
+    const response = { ...directLineTokenResponse, userId: userId };
     res.send(response);
 });
 

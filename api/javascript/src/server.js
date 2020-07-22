@@ -1,4 +1,5 @@
 const express = require('express');
+const cors = require('cors');
 
 const fetchDirectLineTokenAsync = require('./fetchDirectLineToken');
 const validateTokenAsync = require('./validateToken');
@@ -13,12 +14,12 @@ const validTokenIssuer = enforceEnvironmentVariable('VALID_TOKEN_ISSUER');
 const app = express();
 app.use(express.json());
 
+// Set CORS header. For simplicity, allow requests from all origins
+// You should restrict this to specific domains
+app.use(cors());
+
 // Endpoint for generating a Direct Line token, given an ID token in the body
 app.post('/api/direct-line-token', async (req, res) => {
-    // Set CORS header. For simplicity, allow requests from all origins
-    // You should restrict this to specific domains
-    res.header('Access-Control-Allow-Origin', '*');
-
     // Extract ID token from body
     const idToken = req.body['id_token'];
     if (typeof idToken !== 'string') {

@@ -8,7 +8,6 @@ const validateTokenAsync = require('./validateToken');
 const port = enforceEnvironmentVariable('PORT');
 const directLineSecret = enforceEnvironmentVariable('DIRECT_LINE_SECRET');
 const validTokenAudience = enforceEnvironmentVariable('VALID_TOKEN_AUDIENCE');
-const validTokenIssuer = enforceEnvironmentVariable('VALID_TOKEN_ISSUER');
 
 // Create Express application
 const app = express();
@@ -28,7 +27,7 @@ app.post('/api/direct-line-token', async (req, res) => {
     }
 
     // Validate ID token
-    const tokenClaims = await validateTokenAsync(idToken, { audience: validTokenAudience, issuer: validTokenIssuer });
+    const tokenClaims = await validateTokenAsync(idToken, { audience: validTokenAudience });
     if (tokenClaims === null) {
         res.status(400).send({ message: 'invalid token' });
         return;

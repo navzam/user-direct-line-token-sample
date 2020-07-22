@@ -40,14 +40,13 @@ namespace TokenApi.Controllers
             }
 
             // Validate ID token
-            var validIssuer = _configuration["TokenValidationSettings:ValidIssuer"];
             var validAudience = _configuration["TokenValidationSettings:ValidAudience"];
             var configurationManager = new ConfigurationManager<OpenIdConnectConfiguration>(
                 "https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration",
                 new OpenIdConnectConfigurationRetriever(),
                 new HttpDocumentRetriever());
             
-            var validatedToken = await ValidateToken(request.idToken, validIssuer, validAudience, configurationManager);
+            var validatedToken = await ValidateToken(request.idToken, validAudience, configurationManager);
             if (validatedToken == null)
             {
                 return BadRequest(new { message = "invalid token" });
@@ -84,13 +83,11 @@ namespace TokenApi.Controllers
 
         private static async Task<JwtSecurityToken> ValidateToken(
             string token,
-            string issuer,
             string audience,
             IConfigurationManager<OpenIdConnectConfiguration> configurationManager,
             CancellationToken ct = default)
         {
             if (string.IsNullOrEmpty(token)) throw new ArgumentNullException(nameof(token));
-            if (string.IsNullOrEmpty(issuer)) throw new ArgumentNullException(nameof(issuer));
             if (string.IsNullOrEmpty(audience)) throw new ArgumentNullException(nameof(audience));
 
             var discoveryDocument = await configurationManager.GetConfigurationAsync(ct);
@@ -100,8 +97,7 @@ namespace TokenApi.Controllers
             {
                 RequireExpirationTime = true,
                 RequireSignedTokens = true,
-                ValidateIssuer = true,
-                ValidIssuer = issuer,
+                ValidateIssuer = false,
                 ValidateAudience = true,
                 ValidAudience = audience,
                 ValidateIssuerSigningKey = true,

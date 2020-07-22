@@ -64,7 +64,7 @@ and then use `jsonwebtoken` to validate the token:
 return jwt.verify(token, pubKey, validationOptions) as Record<string, any>;
 ```
 
-`validationOptions` define certain parameters of the validation, such as the expected audience and issuer.
+`validationOptions` define certain parameters of the validation, such as the expected audience.
 
 ### Constructing the user ID
 
@@ -106,7 +106,6 @@ const response = await fetch('https://directline.botframework.com/v3/directline/
     | `PORT` | The port on which the API server will run. | 3000 |
     | `DIRECT_LINE_SECRET` | The Direct Line secret issued by Bot Framework. Can be found in the Azure Bot Channels Registration resource after enabling the Direct Line channel. |  |
     | `VALID_TOKEN_AUDIENCE` | The expected audience of the ID token. If using AAD, this should be the client ID of the app registration for the web app. | 34d690a0-a2fb-4163-9dde-404105d88c30 |
-    | `VALID_TOKEN_ISSUER` | The expected issuer of the ID token. If using AAD, this should include the tenant ID that users will be coming from. See the example value for the format | https://login.microsoftonline.com/58e260b0-56cc-4764-8cfc-cd9090194413/v2.0 |
 1. Run `npm install` to install the required dependencies.
 1. Run `npm build` and then `npm start` to start the server.
 

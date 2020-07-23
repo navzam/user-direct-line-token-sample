@@ -1,10 +1,10 @@
 # User-specific Direct Line token sample
 
-This sample demonstrates how to implement WebChat in a way that (a) does not expose your Direct Line secret to the browser, and (b) ensures your bot will receive a consistent and trustworthy user ID across sessions. Specifically, it shows how to retrieve a user-specific Direct Line token for a user who has been verified by an identity provider.
+This sample demonstrates how to implement Web Chat in a way that (a) does not expose your Direct Line secret to the browser, and (b) ensures your bot will receive a consistent and trustworthy user ID across sessions. Specifically, it shows how to retrieve a user-specific Direct Line token for a user who has been verified by an identity provider.
 
 ## Motivation
 
-In the [Direct Line token sample](https://github.com/navzam/direct-line-token-sample), in order to hide the WebChat secret and avoid user impersonation, we bound a random user ID to the Direct Line token. The downside of that approach is that users will have a different ID every time they talk to the bot. We could improve on this by storing a user ID in client-side storage (cookie, `localStorage`, etc.) and sending it to the token API, but there would still be two issues:
+In the [Direct Line token sample](https://github.com/navzam/direct-line-token-sample), in order to hide the Web Chat secret and avoid user impersonation, we bound a random user ID to the Direct Line token. The downside of that approach is that users will have a different ID every time they talk to the bot. We could improve on this by storing a user ID in client-side storage (cookie, `localStorage`, etc.) and sending it to the token API, but there would still be two issues:
 - The user ID would be tied to the browser and wouldn't be consistent across browsers, devices, etc.
 - A malicious user could modify their user ID to attempt to impersonate a different user, so the bot wouldn't be able to trust the user ID.
 
@@ -14,7 +14,7 @@ A better approach is to leverage a user's existing identity from a true identity
 
 This sample contains three components:
 - **The backend API** performs the Direct Line token acquisition. It verifies the user's identity and then acquires a Direct Line token that is bound to that identity.
-- **The UI** is static HTML/JS that could be hosted using any web server. It requires the user to sign in, then makes a request to the backend API with proof of the user's identity. It uses the resulting Direct Line token to render WebChat.
+- **The UI** is static HTML/JS that could be hosted using any web server. It requires the user to sign in, then makes a request to the backend API with proof of the user's identity. It uses the resulting Direct Line token to render Web Chat.
 - **The bot** is a bare-bones bot that responds to every activity by sending the user's ID.  
 
 The interesting component is the backend API, which goes through the following steps:
@@ -207,9 +207,9 @@ var fetchTokenResponse = await _httpClient.SendAsync(fetchTokenRequest, cancella
 
 The resulting Direct Line token will be bound to the passed user ID.
 
-### Calling the API and rendering WebChat
+### Calling the API and rendering Web Chat
 
-After the user signs in, the UI calls the API with the user's ID token and uses the resulting Direct Line token to render WebChat:
+After the user signs in, the UI calls the API with the user's ID token and uses the resulting Direct Line token to render Web Chat:
 
 ```js
 // index.html
@@ -236,7 +236,7 @@ WebChat.renderWebChat(
 );
 ```
 
-Note that we do *not* specify a user ID when initiating WebChat. Direct Line will handle sending the user ID to the bot based on the token.
+Note that we do *not* specify a user ID when initiating Web Chat. Direct Line will handle sending the user ID to the bot based on the token.
 
 ## Running the sample locally
 

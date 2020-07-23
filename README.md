@@ -317,7 +317,12 @@ The sample API is available in multiple languages. Choose one and expand the cor
     | `AAD_APP_ID` | The client ID of the AAD app created above. | 34d690a0-a2fb-4163-9dde-404105d88c30 |
     | `AAD_REDIRECT_URI` | The redirect URI registered in the AAD app created above. | http://localhost:5500 |
 
-1. Serve `index.html` on `localhost:5500` using a web server, or use a local development server such as the [Live Server Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
+1. Serve `index.html` on `localhost:5500` using a web server.
+    - A quick way to get started is using the [http-server](https://www.npmjs.com/package/http-server) npm package. You can use `npx` to run it without installation:
+        ```bash
+        npx http-server ./ -p 5500
+        ```
+    - Another option is a local development server such as the [Live Server Visual Studio Code extension](https://marketplace.visualstudio.com/items?itemName=ritwickdey.LiveServer).
 1. Open `http://localhost:5500` in a browser and sign in.
 
 ## Notes
